@@ -34,17 +34,23 @@
         this.board.bars.push(this);
         //Variable para dibujar un rectangulo en canvas
         this.kind = "rectangle";
-        
+        //Variable para velocidad del movimeinto de las barras
+        this.speed = 10;
+
 
     }
     //Modificar el prototype de la funcion
     self.Bar.prototype = {
-        //Funciones para mover el rectangulo
+        //Funciones para darle movimiento a las barras
         down: function () {
-
+            this.y += this.speed;
         },
         up: function () {
-
+            this.y -= this.speed;
+        },
+        //Imprimir en que cordenada se encuentra la barra
+        toString: function(){
+            return "x: "+ this.x + "y:"+ this.y;
         }
     }
 })();
@@ -86,16 +92,30 @@
     }
 
 })();
+// 
+var board = new Board(800, 500);
+var bar = new Bar(20, 100, 40, 100, board);
+var bar = new Bar(735, 100, 40, 100, board);
+const canvas = document.getElementById('canvas')
+const board_view = new BoardView(canvas, board);
+
+document.addEventListener("keydown", function (ev) {
+    console.log(ev.keyCode);
+    if (ev.keyCode == 38) {
+        bar.up();
+    }
+    else if (ev.keyCode == 40) {
+        bar.down();
+    }
+
+});
 
 self.addEventListener("load", main);
 
-    
-    function main() {
-        var board = new Board(800, 500);
-        var bar = new Bar(20, 100, 40, 100, board);
-        const canvas = document.getElementById('canvas')
-        const board_view = new BoardView(canvas, board);
-        //Dibujar todos los elementos
-        board_view.draw();
-        console.log(board);
-    }
+
+function main() {
+
+    //Dibujar todos los elementos
+    board_view.draw();
+    console.log(board);
+}
