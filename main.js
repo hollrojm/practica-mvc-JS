@@ -12,11 +12,11 @@
         this.ball = null;
 
     }
-    //Metodo para retonar barras y esferas adentro del tablero
+    //Metodo para mostrar barras y esferas en el objeto Board
     self.Board.prototype = {
         get elements() {
-            var elements = this.bars;
-            //elements.push(this.ball);
+            var elements = this.bars.map(function(bar){return bar;});
+            elements.push(this.ball);
             return elements;
         }
     }
