@@ -16,13 +16,28 @@
     self.Board.prototype = {
         get elements() {
             var elements = this.bars;
-            elements.push(this.ball);
+            //elements.push(this.ball);
             return elements;
         }
     }
 
 })();
-//metodo para crear el objeto barras
+//Metodo para crear el objeto pelota
+(function (){
+    self.Ball = function(x,y,radius,board){
+    this.x = y;
+    this.y = y;
+    this.radius = radius;
+    this.speed_y = 0;
+    this.speed_x = 3
+    this.board = board;
+
+    board.ball = this;
+    this.kind = "circle";
+    }
+})();
+
+//Metodo para crear el objeto barras
 (function () {
     self.Bar = function (x, y, width, height, board) {
         this.x = x;
@@ -49,8 +64,8 @@
             this.y -= this.speed;
         },
         //Imprimir en que cordenada se encuentra la barra
-        toString: function(){
-            return "x: "+ this.x + "y:"+ this.y;
+        toString: function () {
+            return "x: " + this.x + "y:" + this.y;
         }
     }
 })();
@@ -68,6 +83,10 @@
 
     //Modificar prototype de la clase BoardView
     self.BoardView.prototype = {
+        //Limpiar el board canvas
+        clean: function () {
+            this.ctx.clearRect(0, 0, this.board.width, this.board.height);
+        },
         //Validar
         draw: function () {
             for (var i = this.board.elements.length - 1; i >= 0; i--) {
@@ -76,18 +95,30 @@
                 draw(this.ctx, drawElement);
 
             };
+        },
+        play: function () {
+            //Limpiar Board
+            this.clean();
+            //Dibujar Board 
+            this.draw();
         }
     }
 
     //Dibujar elementos
     function draw(ctx, element) {
         //Validar si el objeto a dibujar tiene una propiedad kind
-        if (element !== null && element.hasOwnProperty("kind")) {
-            switch (element.kind) {
-                case "rectangle":
-                    ctx.fillRect(element.x, element.y, element.width, element.height);
-                    break;
-            }
+
+        switch (element.kind) {
+            case "rectangle":
+                ctx.fillRect(element.x, element.y, element.width, element.height);
+                break;
+            case "circle":
+                ctx.beginPath();
+                ctx.arc(element.x, element.y, element.radius, 0,7);
+                ctx.fill();
+                ctx.closePath();
+                break;
+
         }
     }
 
@@ -95,27 +126,47 @@
 // 
 var board = new Board(800, 500);
 var bar = new Bar(20, 100, 40, 100, board);
-var bar = new Bar(735, 100, 40, 100, board);
-const canvas = document.getElementById('canvas')
-const board_view = new BoardView(canvas, board);
+var bar_2 = new Bar(735, 100, 40, 100, board);
+var canvas = document.getElementById('canvas')
+var board_view = new BoardView(canvas, board);
+var ball = new Ball(350, 100, 10, board);
 
+
+
+
+//Funcion de moviento de barras
 document.addEventListener("keydown", function (ev) {
-    console.log(ev.keyCode);
+    //cancelar movimiento en el navegador
+    ev.preventDefault();
+
     if (ev.keyCode == 38) {
         bar.up();
-    }
-    else if (ev.keyCode == 40) {
+    } else if (ev.keyCode == 40) {
         bar.down();
+
+        //Asignacion de teclas a la barra numero 2 (S,W)
+    } else if (ev.keyCode == 87) {
+        //W
+        bar_2.up();
+    } else if (ev.keyCode === 83) {
+        //S
+        bar_2.down();
     }
 
 });
 
-self.addEventListener("load", main);
+//self.addEventListener("load", main);
+
+//Request Animation frame
+window.requestAnimationFrame(controller);
+
+function controller() {
+
+    board_view.play();
+
+    //Actualizacion en tiempo real
+    window.requestAnimationFrame(controller);
 
 
-function main() {
 
-    //Dibujar todos los elementos
-    board_view.draw();
-    console.log(board);
 }
