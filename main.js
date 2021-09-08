@@ -35,7 +35,7 @@
         this.direction = 1;
         this.bounce_angle = 0;
         this.max_bounce_angle = Math.PI / 12;
-        this.speed = 3;
+        this.speed = 3.0;
 
         board.ball = this;
         this.kind = "circle";
@@ -68,8 +68,13 @@
             this.speed_x = this.speed * Math.cos(this.bounce_angle);
 
             //Cambiar la direccion según la posicion de la barra
-            if (this.x > (this.board.width / 2)) this.direction = -1;
-            else this.direction = 1;
+            if (this.x > (this.board.width / 2)) {
+                this.direction = -1;
+                this.speed += 0.2;
+            }else {
+                this.direction = 1;
+                this.speed += 0.2;
+            }
 
         }
     }
@@ -89,6 +94,7 @@
         this.kind = "rectangle";
         //Variable para velocidad del movimeinto de las barras
         this.speed = 10;
+        
 
 
     }
@@ -100,6 +106,7 @@
         },
         up: function () {
             this.y -= this.speed;
+            console.log("hola mundo");
         },
         //Imprimir en que cordenada se encuentra la barra
         toString: function () {
@@ -117,13 +124,16 @@
         this.board = board;
         //Objeto contexto para dibujar en JS
         this.ctx = canvas.getContext("2d");
+        
+        
     }
 
     //Modificar prototype de la clase BoardView
     self.BoardView.prototype = {
         //Limpiar el board canvas
         clean: function () {
-            this.ctx.clearRect(0, 0, this.board.width, this.board.height);
+            this.ctx.clearRect(0, 0, this.board.width, this.board.height,);
+            
         },
         //Validar
         draw: function () {
@@ -142,6 +152,13 @@
                     this.board.ball.collision(bar);
                 }
             }
+            if(this.board.ball.y <= 10){
+                this.board.ball.speed_y =this.board.ball.speed_y * -1;
+            }
+            else if(this.board.ball.y >= 390){
+                this.board.ball.speed_y =this.board.ball.speed_y * -1;
+            }
+            
         },
         play: function () {
             if (this.board.playing) {
@@ -188,24 +205,25 @@
         //background(220);
         switch (element.kind) {
             case "rectangle":
+                ctx.fillStyle = "white";
                 ctx.fillRect(element.x, element.y, element.width, element.height);
                 break;
             case "circle":
                 ctx.beginPath();
+                ctx.fillStyle= "white";
                 ctx.arc(element.x, element.y, element.radius, 0, 7);
                 ctx.fill();
                 ctx.closePath();
                 break;
-
         }
     }
 
 })();
 // 
-var board = new Board(800, 500);
-var bar = new Bar(20, 100, 40, 100, board);
-var bar_2 = new Bar(735, 100, 40, 100, board);
-var canvas = document.getElementById('canvas')
+var board = new Board(800, 400 );
+var bar = new Bar(10, 100, 20, 100, board);
+var bar_2 = new Bar(770, 100, 20, 100, board);
+var canvas = document.getElementById('canvas');
 var board_view = new BoardView(canvas, board);
 var ball = new Ball(350, 100, 10, board);
 
@@ -216,20 +234,20 @@ var ball = new Ball(350, 100, 10, board);
 document.addEventListener("keydown", function (ev) {
     //cancelar movimiento en el navegador
 
-
-    if (ev.keyCode == 38) {
+    if (ev.keyCode == 87) {
         ev.preventDefault();
         bar.up();
-    } else if (ev.keyCode == 40) {
+    } else if (ev.keyCode == 83) {
         ev.preventDefault();
         bar.down();
 
         //Asignacion de teclas a la barra numero 2 (S,W)
-    } else if (ev.keyCode == 87) {
+    } else if (ev.keyCode == 38) {
         ev.preventDefault();
         //W
         bar_2.up();
-    } else if (ev.keyCode === 83) {
+        
+    } else if (ev.keyCode == 40) {
         ev.preventDefault();
         //S
         bar_2.down();
@@ -247,10 +265,7 @@ board_view.draw();
 //Request Animation frame
 window.requestAnimationFrame(controller);
 
-//Tiempo de movimiento de pelota
-setTimeout(function () {
-    this.ball.direction = -1;
-}, 4000);
+
 
 function controller() {
 
@@ -258,7 +273,6 @@ function controller() {
 
     //Actualizacion en tiempo real
     window.requestAnimationFrame(controller);
-
 
 
 }

@@ -10,3 +10,8 @@ Se debe evidenciar almenos 6 commits con el avance del proyecto.
 Los commit debe ser descriptivos, claro, concretos y analizados por usted. 
 Sacar una lista de preguntas (que en el instante tu puedas responder) para luego discutirlas.
 Recomendación: hacer uso de los comentarios dentro del código para entender lo que se esta.
+
+# Imagen en ejecución 
+
+
+![Imagen](Run.PNG)
