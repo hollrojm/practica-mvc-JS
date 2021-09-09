@@ -1,22 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
-        canvas{border:2px solid;
-                background-color:black }
+        canvas {
+            border: 2px solid;
+            background-color: black;
+            border-radius: 5%;
+        }
+
+
+
+        .score h2 {
+            color: green;
+            margin-left: 400px;
+        }
+        .score2 h2{
+            margin-right: 400px;
+        }
     </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+        integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
 </head>
+
 <body>
-    <h1>Ping Pong </h1>
-    <canvas id="canvas"></canvas>
+    <h1 class="text-center">Ping Pong Game</h1>
+
+
+    <div class="d-flex justify-content-between ">
+        <div class=" text-center score">
+            <h2 type="number" class="scoreOne">0</h2>
+        </div>
+
+        <div class=" score2">
+            <h2 type="number" class="scoreTwo ">0</h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col text-center">
+            <canvas id="canvas"></canvas>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col text-center">
+            <br>
+            <button type="button" class="btn btn-primary btn-lg" onclick="
+            swal({
+                    title: 'Instrucciones',
+                    text: 'PRESIONA LA TECLA ESPACIADORA PARA INICIAR\n Jugador 1 Use las teclas W para subir y S para bajar,\n Jugador 2 Use en el teclado las flechas de subir y bajar ',
+                    icon: 'info',
+                    button: 'Aww yiss!',
+                });
+            ">Instrucciones</button>
+        </div>
+    </div>
+    <footer>
+        <br>
+        <p class="text-center ">© 2021 Todos los derechos reservados. by Hollman Rojas® for SOFKA Training. </p>
+    </footer>
     <script src="./main.js"></script>
-<footer>
-    <p>© 2021 Todos los derechos reservados. by Hollman®.</p>
-</footer>
-    
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js">
+
+    </script>
 </body>
+
 </html>

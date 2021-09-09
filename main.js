@@ -49,10 +49,10 @@
             this.y += (this.speed_y);
 
         },
-        get width(){
+        get width() {
             return this.radius * 2;
         },
-        get height(){
+        get height() {
             return this.radius * 2;
         },
         collision: function (bar) {
@@ -71,7 +71,7 @@
             if (this.x > (this.board.width / 2)) {
                 this.direction = -1;
                 this.speed += 0.2;
-            }else {
+            } else {
                 this.direction = 1;
                 this.speed += 0.2;
             }
@@ -94,7 +94,7 @@
         this.kind = "rectangle";
         //Variable para velocidad del movimeinto de las barras
         this.speed = 10;
-        
+
 
 
     }
@@ -124,8 +124,8 @@
         this.board = board;
         //Objeto contexto para dibujar en JS
         this.ctx = canvas.getContext("2d");
-        
-        
+
+
     }
 
     //Modificar prototype de la clase BoardView
@@ -133,7 +133,7 @@
         //Limpiar el board canvas
         clean: function () {
             this.ctx.clearRect(0, 0, this.board.width, this.board.height,);
-            
+
         },
         //Validar
         draw: function () {
@@ -145,6 +145,9 @@
             };
         },
         check_collisions: function () {
+            scoreOne = document.querySelector(".scoreOne");
+            scoreTwo = document.querySelector(".scoreTwo");
+
             //iterar las barras
             for (var i = this.board.bars.length - 1; i >= 0; i--) {
                 var bar = this.board.bars[i];
@@ -152,13 +155,46 @@
                     this.board.ball.collision(bar);
                 }
             }
-            if(this.board.ball.y <= 10){
-                this.board.ball.speed_y =this.board.ball.speed_y * -1;
+            if (this.board.ball.y <= 10) {
+                this.board.ball.speed_y = this.board.ball.speed_y * -1;
             }
-            else if(this.board.ball.y >= 390){
-                this.board.ball.speed_y =this.board.ball.speed_y * -1;
+            else if (this.board.ball.y >= 390) {
+                this.board.ball.speed_y = this.board.ball.speed_y * -1;
             }
-            
+            if (this.board.ball.x <= -15) {
+
+                board.playing = !board.playing;
+                this.board.ball.x = 350;
+                this.board.ball.y = 150;
+                this.board.bars.y = 100;
+                swal({
+                    title: "punto para el jugador 2",
+                    icon: "success",
+                    button: "Continuar",
+                  });
+                this.board.ball.speed = 3;
+                board_view.draw();
+                this.board.ball.speed_x = this.board.ball.speed_x * -1;
+                scoreTwo.innerHTML =(Number(scoreTwo.innerHTML) + 1);
+
+            }
+            if (this.board.ball.x >= 815) {
+                
+                board.playing = !board.playing;
+                this.board.ball.x = 350;
+                this.board.ball.y = 150;
+                //this.board.bar.y = 100;
+                swal({
+                    title: "punto para el jugador 1",
+                    icon: "success",
+                    button: "Continuar",
+                  });
+                this.board.ball.speed = 3;
+                board_view.draw();
+                this.board.ball.speed_x = this.board.ball.speed_x * -1;
+                scoreOne.innerHTML = (Number(scoreOne.innerHTML) + 1);
+            }
+
         },
         play: function () {
             if (this.board.playing) {
@@ -166,7 +202,7 @@
                 this.clean();
                 //Dibujar Board 
                 this.draw();
-                //Colición
+                //Colisión
                 this.check_collisions();
                 //Movimiento de la pelota
                 this.board.ball.move();
@@ -210,7 +246,7 @@
                 break;
             case "circle":
                 ctx.beginPath();
-                ctx.fillStyle= "white";
+                ctx.fillStyle = "white";
                 ctx.arc(element.x, element.y, element.radius, 0, 7);
                 ctx.fill();
                 ctx.closePath();
@@ -220,7 +256,7 @@
 
 })();
 // 
-var board = new Board(800, 400 );
+var board = new Board(800, 400);
 var bar = new Bar(10, 100, 20, 100, board);
 var bar_2 = new Bar(770, 100, 20, 100, board);
 var canvas = document.getElementById('canvas');
@@ -246,7 +282,7 @@ document.addEventListener("keydown", function (ev) {
         ev.preventDefault();
         //W
         bar_2.up();
-        
+
     } else if (ev.keyCode == 40) {
         ev.preventDefault();
         //S
