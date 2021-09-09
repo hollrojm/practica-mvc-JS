@@ -7,7 +7,6 @@
         this.width = width;
         this.height = height;
         this.playing = false;
-        this.game_over = false;
         this.bars = [];
         this.ball = null;
         this.playing = false;
@@ -106,7 +105,6 @@
         },
         up: function () {
             this.y -= this.speed;
-            console.log("hola mundo");
         },
         //Imprimir en que cordenada se encuentra la barra
         toString: function () {
@@ -114,7 +112,7 @@
         }
     }
 })();
-//Clase para crear el tablero(vista)
+//Clase para visualizar el tablero(vista)
 (function () {
     self.BoardView = function (canvas, board) {
         //Variables del objeto
@@ -144,6 +142,7 @@
 
             };
         },
+        //Metodo para resolver la colisiones de la esfera 
         check_collisions: function () {
             scoreOne = document.querySelector(".scoreOne");
             scoreTwo = document.querySelector(".scoreTwo");
@@ -168,7 +167,7 @@
                 this.board.ball.y = 150;
                 this.board.bars.y = 100;
                 swal({
-                    title: "punto para el jugador 2",
+                    title: "Punto para el jugador 2",
                     icon: "success",
                     button: "Continuar",
                   });
@@ -185,7 +184,7 @@
                 this.board.ball.y = 150;
                 //this.board.bar.y = 100;
                 swal({
-                    title: "punto para el jugador 1",
+                    title: "Punto para el jugador 1",
                     icon: "success",
                     button: "Continuar",
                   });
@@ -196,6 +195,7 @@
             }
 
         },
+        //Metodo render
         play: function () {
             if (this.board.playing) {
                 //Limpiar Board
@@ -238,7 +238,6 @@
     //Dibujar elementos
     function draw(ctx, element) {
         //Validar si el objeto a dibujar tiene una propiedad kind
-        //background(220);
         switch (element.kind) {
             case "rectangle":
                 ctx.fillStyle = "white";
@@ -255,15 +254,13 @@
     }
 
 })();
-// 
+// Instanciando objetos en el scope y canvas
 var board = new Board(800, 400);
 var bar = new Bar(10, 100, 20, 100, board);
 var bar_2 = new Bar(770, 100, 20, 100, board);
 var canvas = document.getElementById('canvas');
 var board_view = new BoardView(canvas, board);
 var ball = new Ball(350, 100, 10, board);
-
-
 
 
 //Funcion de moviento de barras
@@ -295,20 +292,16 @@ document.addEventListener("keydown", function (ev) {
     }
 
 });
-
+//Render
 board_view.draw();
 
 //Request Animation frame
 window.requestAnimationFrame(controller);
 
 
-
+//Metodo contrallador
 function controller() {
-
     board_view.play();
-
     //Actualizacion en tiempo real
     window.requestAnimationFrame(controller);
-
-
 }
